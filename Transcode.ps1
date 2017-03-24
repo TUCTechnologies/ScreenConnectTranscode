@@ -1,4 +1,4 @@
-#Here lie the global variables
+# Here lie the global variables
 $ScreenConnectDir = "C:\Program Files (x86)\ScreenConnect"
 $SaveDirectory = "C:\Transcoded Sessions"
 Add-Type -Path (Get-Item "$ScreenConnectDir\bin\ScreenConnect.Core.dll").FullName
@@ -15,9 +15,11 @@ Function ExistingTranscode($fileNameToTest)
 	{
 		If($fileNameToTest -eq ($alreadyTranscoded[$i]).Name)
 		{
+			# The file already exists
 			Return $True
 		}
 	}
+	# The file doesn't exist
 	Return $False;	
 }
 
@@ -62,7 +64,6 @@ ForEach ($captureFile in $files)
 	# If a transcode hasn't happened yet, do it
 	If(-Not(ExistingTranscode($outputFileName)))
 	{
-		
 	    Write-Host "Transcoding $outputFileName"
 		
 		Try
@@ -77,6 +78,11 @@ ForEach ($captureFile in $files)
 		{
 			# Display encountered errors
 			echo "Error processing $($captureFile): $($Error[0])"
+		}
+		Finally
+		{
+			# Close the source file reader
+			$inputStream.Dispose()
 		}
 	}
 	Else
