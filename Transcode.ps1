@@ -7,20 +7,8 @@ Add-Type -Path (Get-Item "$ScreenConnectDir\bin\ScreenConnect.Server.dll").FullN
 # Returns true if a transcode has already happened (based on filename)
 Function ExistingTranscode($fileNameToTest)
 {
-	# Get a list of already transcoded files
-	$alreadyTranscoded = Get-ChildItem("$SaveDirectory\*")
-	
-	# Loop through the list of already transcoded filenames
-	For($i=0; $i -lt ($alreadyTranscoded | Measure-Object).Count; $i++)
-	{
-		If($fileNameToTest -eq ($alreadyTranscoded[$i]).Name)
-		{
-			# The file already exists
-			Return $True
-		}
-	}
-	# The file doesn't exist
-	Return $False;	
+	# Returns true if the file exists
+	Return (Test-Path "$SaveDirectory\$fileNameToTest")
 }
 
 # Loop through the raw captures
